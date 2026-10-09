@@ -1,0 +1,9 @@
+output "raw_bucket" { value = aws_s3_bucket.raw.bucket }
+output "watermark_table" { value = aws_dynamodb_table.watermark.name }
+output "servicenow_secret_arn" { value = aws_secretsmanager_secret.servicenow.arn }
+output "extractor_function" { value = aws_lambda_function.extractor.function_name }
+output "dlq_url" { value = aws_sqs_queue.dlq.url }
+output "raw_bucket_arn" { value = aws_s3_bucket.raw.arn }
+output "kms_key_arn" { value = aws_kms_key.data.arn }
+output "dlq_arn" { value = aws_sqs_queue.dlq.arn }
+output "secret_name" { value = aws_secretsmanager_secret.servicenow.name }

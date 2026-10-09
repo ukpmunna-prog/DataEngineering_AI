@@ -1,0 +1,68 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+      - run: pytest -q
+
+  infra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Terraform format
+        run: terraform fmt -check -recursive infra
+      - name: Terraform validate (dev and prod)
+        run: |
+          for env in dev prod; do
+            (cd infra/envs/$env && terraform init -backend=false -input=false && terraform validate)
+          done
+      - name: Lint CloudFormation bootstrap
+        run: |
+          pip install cfn-lint
+          cfn-lint infra/bootstrap/bootstrap.yaml
+      - name: Lint shell scripts
+        run: shellcheck scripts/*.sh
+      - name: Security scan (IaC)
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: config
+          scan-ref: infra
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

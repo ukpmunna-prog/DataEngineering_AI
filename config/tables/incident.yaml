@@ -1,0 +1,27 @@
+table: incident
+watermark_column: sys_updated_on
+overlap_minutes: 120
+page_size: 1000
+fields:
+  - sys_id
+  - number
+  - short_description
+  - description
+  - state
+  - priority
+  - urgency
+  - impact
+  - category
+  - cmdb_ci
+  - business_service
+  - assignment_group
+  - caused_by
+  - rfc
+  - close_code
+  - close_notes
+  - opened_at
+  - resolved_at
+  - sys_created_on
+  - sys_updated_on
+extra_query: ""
+s3_prefix: raw/incident

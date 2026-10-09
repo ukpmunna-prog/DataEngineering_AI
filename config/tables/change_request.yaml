@@ -1,0 +1,29 @@
+table: change_request
+watermark_column: sys_updated_on
+overlap_minutes: 120
+page_size: 1000
+fields:
+  - sys_id
+  - number
+  - short_description
+  - description
+  - type
+  - state
+  - risk
+  - impact
+  - priority
+  - category
+  - cmdb_ci
+  - business_service
+  - assignment_group
+  - start_date
+  - end_date
+  - justification
+  - implementation_plan
+  - backout_plan
+  - close_code
+  - close_notes
+  - sys_created_on
+  - sys_updated_on
+extra_query: ""
+s3_prefix: raw/change_request
