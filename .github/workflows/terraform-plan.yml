@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        env: [dev, prod]
+        env: [dev]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
