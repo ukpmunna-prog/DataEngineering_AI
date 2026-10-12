@@ -96,7 +96,9 @@ Resources:
               StringEquals:
                 "token.actions.githubusercontent.com:aud": sts.amazonaws.com
               StringLike:
-                "token.actions.githubusercontent.com:sub": !Sub "repo:${GitHubOrg}/${GitHubRepo}:pull_request"
+                "token.actions.githubusercontent.com:sub":
+                  - !Sub "repo:${GitHubOrg}/${GitHubRepo}:pull_request"
+                  - !Sub "repo:${GitHubOrg}@*/${GitHubRepo}@*:pull_request"
       Policies:
         - PolicyName: plan-read-only
           PolicyDocument:
@@ -279,7 +281,10 @@ Resources:
             Condition:
               StringEquals:
                 "token.actions.githubusercontent.com:aud": sts.amazonaws.com
-                "token.actions.githubusercontent.com:sub": !Sub "repo:${GitHubOrg}/${GitHubRepo}:environment:dev"
+              StringLike:
+                "token.actions.githubusercontent.com:sub":
+                  - !Sub "repo:${GitHubOrg}/${GitHubRepo}:environment:dev"
+                  - !Sub "repo:${GitHubOrg}@*/${GitHubRepo}@*:environment:dev"
 
   ProdDeployPolicy:
     Type: AWS::IAM::ManagedPolicy
@@ -409,7 +414,10 @@ Resources:
             Condition:
               StringEquals:
                 "token.actions.githubusercontent.com:aud": sts.amazonaws.com
-                "token.actions.githubusercontent.com:sub": !Sub "repo:${GitHubOrg}/${GitHubRepo}:environment:prod"
+              StringLike:
+                "token.actions.githubusercontent.com:sub":
+                  - !Sub "repo:${GitHubOrg}/${GitHubRepo}:environment:prod"
+                  - !Sub "repo:${GitHubOrg}@*/${GitHubRepo}@*:environment:prod"
 
 Outputs:
   StateBucket:
