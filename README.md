@@ -1,5 +1,3 @@
-
-
 # sn-change-intel
 
 Config-driven ingestion of ServiceNow `change_request` and `incident` data into S3 (sprint 1),

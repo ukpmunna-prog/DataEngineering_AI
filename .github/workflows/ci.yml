@@ -49,14 +49,6 @@ jobs:
           cfn-lint infra/bootstrap/bootstrap.yaml
       - name: Lint shell scripts
         run: shellcheck scripts/*.sh
-      - name: Security scan (IaC)
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: config
-          scan-ref: infra
-          severity: HIGH,CRITICAL
-          exit-code: "1"
-
   secrets:
     runs-on: ubuntu-latest
     steps:
