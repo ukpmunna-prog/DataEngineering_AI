@@ -32,7 +32,7 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
-      - run: ./scripts/package.sh
+      - run: bash scripts/package.sh
       - name: Terraform destroy
         working-directory: infra/envs/dev
         run: |
