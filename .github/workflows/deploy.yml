@@ -38,10 +38,10 @@ jobs:
       environment: dev
     secrets: inherit
 
-  prod:
-    needs: dev
-    if: github.event_name == 'push' || inputs.target == 'dev-and-prod'
-    uses: ./.github/workflows/_deploy.yml
-    with:
-      environment: prod
-    secrets: inherit
+  # prod:
+  #   needs: dev
+  #   if: github.event_name == 'push' || inputs.target == 'dev-and-prod'
+  #   uses: ./.github/workflows/_deploy.yml
+  #   with:
+  #     environment: prod
+  #   secrets: inherit
