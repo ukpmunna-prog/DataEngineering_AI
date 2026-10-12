@@ -41,7 +41,7 @@ jobs:
           sudo ./aws/install --update
           aws --version
       - name: Build Lambda package
-        run: ./scripts/package.sh
+        run: bash scripts/package.sh
       - name: Terraform init
         working-directory: ${{ env.TF_DIR }}
         run: |
@@ -66,11 +66,11 @@ jobs:
           echo "vbucket=$(terraform output -raw vector_bucket)" >> "$GITHUB_OUTPUT"
           echo "vindex=$(terraform output -raw vector_index)" >> "$GITHUB_OUTPUT"
       - name: Ensure vector bucket and index exist
-        run: ./scripts/ensure_vector_index.sh "${{ steps.out.outputs.vbucket }}" "${{ steps.out.outputs.vindex }}"
+        run: bash scripts/ensure_vector_index.sh "${{ steps.out.outputs.vbucket }}" "${{ steps.out.outputs.vindex }}"
       - name: Store ServiceNow credentials
         env:
           SN_USERNAME: ${{ secrets.SN_USERNAME }}
           SN_PASSWORD: ${{ secrets.SN_PASSWORD }}
-        run: ./scripts/set_sn_secret.sh "${{ steps.out.outputs.secret }}"
+        run: bash scripts/set_sn_secret.sh "${{ steps.out.outputs.secret }}"
       - name: Smoke test
-        run: ./scripts/smoke_test.sh "${{ inputs.environment }}" "${{ steps.out.outputs.vbucket }}" "${{ steps.out.outputs.vindex }}"
+        run: bash scripts/smoke_test.sh "${{ inputs.environment }}" "${{ steps.out.outputs.vbucket }}" "${{ steps.out.outputs.vindex }}"
