@@ -47,7 +47,7 @@ jobs:
           role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - name: Build Lambda package
-        run: ./scripts/package.sh
+        run: bash scripts/package.sh
       - name: Terraform plan
         id: plan
         working-directory: infra/envs/${{ matrix.env }}
