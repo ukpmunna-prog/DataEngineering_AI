@@ -88,14 +88,14 @@ resource "aws_iam_role_policy" "ai" {
 }
 
 resource "aws_lambda_function" "ai" {
-  for_each                       = local.functions
-  function_name                  = "${local.name}-${each.key}"
-  role                           = aws_iam_role.ai[each.key].arn
-  handler                        = each.value.handler
-  runtime                        = "python3.12"
-  timeout                        = 900
-  memory_size                    = 1024
-  filename                       = var.lambda_package
+  for_each         = local.functions
+  function_name    = "${local.name}-${each.key}"
+  role             = aws_iam_role.ai[each.key].arn
+  handler          = each.value.handler
+  runtime          = "python3.12"
+  timeout          = 900
+  memory_size      = 1024
+  filename         = var.lambda_package
   source_code_hash = filebase64sha256(var.lambda_package)
 
   environment {
