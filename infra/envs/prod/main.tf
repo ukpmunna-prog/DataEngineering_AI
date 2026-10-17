@@ -33,6 +33,11 @@ variable "lambda_package" {
   type    = string
   default = "../../../build/extractor.zip"
 }
+variable "extractor_invocations_enabled" {
+  description = "Whether scheduled and direct extractor Lambda invocations are allowed"
+  type        = bool
+  default     = true
+}
 variable "bedrock_model_id" {
   description = "Claude model or inference profile id enabled in Bedrock for this account. In eu-north-1 Claude is reached through an EU cross-region inference profile (an id starting with eu.)"
   type        = string
@@ -47,11 +52,12 @@ variable "vector_index" {
 }
 
 module "ingest" {
-  source          = "../../modules/ingest"
-  env             = var.env
-  region          = var.region
-  sn_instance_url = var.sn_instance_url
-  lambda_package  = var.lambda_package
+  source                        = "../../modules/ingest"
+  env                           = var.env
+  region                        = var.region
+  sn_instance_url               = var.sn_instance_url
+  lambda_package                = var.lambda_package
+  extractor_invocations_enabled = var.extractor_invocations_enabled
 }
 
 module "ai" {

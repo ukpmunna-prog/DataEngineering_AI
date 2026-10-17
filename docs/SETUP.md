@@ -63,6 +63,9 @@ Branch protection on `main`: require pull requests and the `ci` checks (`python`
 - Change infra or code: pull request, read the plan comment, merge.
 - Add a ServiceNow table: add `config/tables/<table>.yaml` and add the name to `tables` in the module call.
 - Rotate ServiceNow credentials: change the GitHub environment secrets and re-run `deploy`.
+- Disable the extractor Lambda in dev: set `extractor_invocations_enabled = false` in `infra/envs/dev/dev.tfvars` and deploy.
+  This disables the extractor's scheduled rules and sets its reserved concurrency to zero, rejecting direct invocations too.
+  The embedder and agent remain enabled. Set it back to `true` and deploy to resume the extractor.
 - Roll back: revert the commit on `main`; the pipeline applies the previous state.
 - Remove dev: run the `destroy-dev` workflow and type `destroy`.
 
