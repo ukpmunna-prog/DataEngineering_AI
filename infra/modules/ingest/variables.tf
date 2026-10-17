@@ -13,6 +13,10 @@ variable "lambda_package" {
   description = "Path to the zipped extractor package"
   type        = string
 }
+variable "extractor_invocations_enabled" {
+  description = "Whether scheduled and direct extractor Lambda invocations are allowed"
+  type        = bool
+}
 variable "tags" {
   type    = map(string)
   default = {}

@@ -117,6 +117,7 @@ resource "aws_cloudwatch_event_rule" "ai" {
   for_each            = local.functions
   name                = "${local.name}-${each.key}"
   schedule_expression = each.value.cron
+  is_enabled          = true
   tags                = var.tags
 }
 

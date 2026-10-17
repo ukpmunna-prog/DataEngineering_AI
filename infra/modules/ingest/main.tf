@@ -134,14 +134,15 @@ resource "aws_cloudwatch_log_group" "extractor" {
 }
 
 resource "aws_lambda_function" "extractor" {
-  function_name    = "${local.name}-extractor"
-  role             = aws_iam_role.extractor.arn
-  handler          = "src.extractor.handler.handler"
-  runtime          = "python3.12"
-  timeout          = 840
-  memory_size      = 512
-  filename         = var.lambda_package
-  source_code_hash = filebase64sha256(var.lambda_package)
+  function_name                  = "${local.name}-extractor"
+  role                           = aws_iam_role.extractor.arn
+  handler                        = "src.extractor.handler.handler"
+  runtime                        = "python3.12"
+  timeout                        = 840
+  memory_size                    = 512
+  filename                       = var.lambda_package
+  source_code_hash               = filebase64sha256(var.lambda_package)
+  reserved_concurrent_executions = var.extractor_invocations_enabled ? -1 : 0
 
   environment {
     variables = {
@@ -162,6 +163,7 @@ resource "aws_cloudwatch_event_rule" "schedule" {
   for_each            = toset(var.tables)
   name                = "${local.name}-extract-${each.key}"
   schedule_expression = var.schedule_expression
+  is_enabled          = var.extractor_invocations_enabled
   tags                = var.tags
 }
 
